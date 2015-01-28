@@ -6,7 +6,7 @@ include "../tools/premake/common/"
 
 solution "metazelda"
 	math.randomseed(string.hash(solution().name))
-	startproject "metazelda"
+	startproject "viewer"
 	addCommonConfig()
 
 -------------------------------------------------------------------------------
@@ -19,30 +19,8 @@ solution "metazelda"
 	local LIBS      = "../libs/"
 	local SRC       = "../src/"
 
-	local DUNGEONS	= LIBS.."dungeons/"
-
 	local BUILD_DIR = "../build/".._OPTIONS["arch"].."/"
 	local RELEASE_DIR = "../release/".._OPTIONS["arch"].."/"
-
--------------------------------------------------------------------------------
-
-project "dungeons"
-	targetdir(BUILD_DIR)
-	kind "StaticLib"
-	language "C++"
-
-	files
-	{
-		DUNGEONS.."/src/**",
-	}
-
-	configuration "Debug"
-		defines { "_DEBUG" }
-		buildoptions { "/MDd" }
-
-	configuration "Release"
-		defines { "NDEBUG" }
-		buildoptions { "/MD" }
 
 -------------------------------------------------------------------------------
 
@@ -54,7 +32,6 @@ project "viewer"
 	includedirs 
 	{
 		SRC,
-		DUNGEONS,
 	}
 
 	files
@@ -65,11 +42,6 @@ project "viewer"
 	libdirs 
 	{ 
 		BUILD_DIR,
-	}
-
-	links
-	{
-		"dungeons",
 	}
 
 	targetname( "viewer_" .. _OPTIONS["arch"])
